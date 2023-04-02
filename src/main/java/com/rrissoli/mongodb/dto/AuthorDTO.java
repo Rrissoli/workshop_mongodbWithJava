@@ -7,18 +7,18 @@ import com.rrissoli.mongodb.domain.User;
 public class AuthorDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	private String id;
 	private String name;
-	private String email;
+
 
 	public AuthorDTO() {
 
 	}
 
 	public AuthorDTO(User obj) {
-		
+		id = obj.getId();
 		name = obj.getName();
-		email = obj.getEmail();
+		
 	}
 
 	
@@ -30,12 +30,14 @@ public class AuthorDTO implements Serializable{
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getId() {
+		return id;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setId(String id) {
+		this.id = id;
 	}
+
+	
 	
 }
