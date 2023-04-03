@@ -1,7 +1,7 @@
 package com.rrissoli.mongodb.resources;
 
 import java.net.URI;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.rrissoli.mongodb.domain.Post;
 import com.rrissoli.mongodb.domain.User;
 import com.rrissoli.mongodb.dto.UserDTO;
 import com.rrissoli.mongodb.services.UserService;
 import com.rrissoli.mongodb.services.exceptions.ObjectNotFoundException;
-
-import jakarta.servlet.Servlet;
 
 @RestController
 @RequestMapping(value="/users")
@@ -67,6 +66,16 @@ public class UserResource {
 			obj.setId(id);
 			obj = service.update(obj);
 			return ResponseEntity.noContent().build();
+		} catch (ObjectNotFoundException e) {
+			throw new ObjectNotFoundException("Not found object with id = " + id);
+		}
+	}
+	@RequestMapping(value="/{id}/posts", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>>  findPosts(@PathVariable String id ){
+		try {
+			User user = service.findById(id);
+			
+			return ResponseEntity.ok().body(user.getPosts());
 		} catch (ObjectNotFoundException e) {
 			throw new ObjectNotFoundException("Not found object with id = " + id);
 		}
